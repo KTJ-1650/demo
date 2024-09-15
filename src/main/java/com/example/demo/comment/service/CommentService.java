@@ -7,6 +7,10 @@ import com.example.demo.comment.repository.CommentRepository;
 import com.example.demo.schedule.entity.Schedule;
 import com.example.demo.schedule.repository.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Request;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -61,5 +65,16 @@ public class CommentService {
         }
 
         commentRepository.deleteById(commentId);
+    }
+
+    public Page<CommentResponseDto> pageComment(int page, int size) {
+
+        Pageable pageable = PageRequest.of(page -1,size);
+
+        Page<Comment> commentPage = commentRepository.findAllByOrderByModifiedAtDesc(pageable);
+
+        Page<CommentResponseDto> commentResponseDtos =commentPage.map(comment -> new CommentResponseDto(comment));
+
+        return commentResponseDtos;
     }
 }

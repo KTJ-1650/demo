@@ -5,8 +5,10 @@ import com.example.demo.comment.dto.CommentResponseDto;
 import com.example.demo.comment.repository.CommentRepository;
 import com.example.demo.comment.service.CommentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.PublicKey;
 import java.util.List;
 
 @RestController
@@ -37,5 +39,11 @@ public class CommentController {
     public void deleteComment(@PathVariable Long commentId){
 
         commentService.deleteComment(commentId);
+    }
+
+    @GetMapping("/page")
+    public Page<CommentResponseDto> pageComment(@RequestParam(defaultValue = "1")int page,@RequestParam(defaultValue = "5")int size){
+
+        return commentService.pageComment(page,size);
     }
 }
