@@ -46,4 +46,11 @@ public class ScheduleService {
     }
 
 
+    public void deleteSchedule(Long scheduleId) {
+
+      Schedule foundSchedule  =  scheduleRepository.findById(scheduleId)
+                .orElseThrow(()-> new NoSuchElementException("아이디가 존재하지 않습니다."));
+
+      scheduleRepository.delete(foundSchedule);
+    }
 }
