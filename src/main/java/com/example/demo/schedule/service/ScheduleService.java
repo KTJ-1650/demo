@@ -1,5 +1,7 @@
 package com.example.demo.schedule.service;
 
+import com.example.demo.assign.entity.Assign;
+import com.example.demo.assign.repository.AssignRepository;
 import com.example.demo.schedule.entity.Schedule;
 import com.example.demo.schedule.repository.ScheduleRepository;
 import com.example.demo.schedule.scheduledto.ScheduleRequestDto;
@@ -10,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -17,15 +20,12 @@ import java.util.NoSuchElementException;
 public class ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
+    private final AssignRepository assignRepository;
 
-    private final UserRepository userRepository;
+    public ScheduleResponseDto createSchedule(ScheduleRequestDto scheduleRequestDto){
 
-    public ScheduleResponseDto createSchedule(Long userId,ScheduleRequestDto scheduleRequestDto){
 
-      User foundUser =  userRepository.findById(userId)
-                .orElseThrow(()-> new NoSuchElementException("유저 아이디가 존재하지 않습니다."));
-
-        Schedule schedule = new Schedule(foundUser,scheduleRequestDto);
+        Schedule schedule = new Schedule(scheduleRequestDto);
 
        Schedule savedSchedule  = scheduleRepository.save(schedule);
 

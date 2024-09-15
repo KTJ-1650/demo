@@ -1,5 +1,6 @@
 package com.example.demo.schedule.entity;
 
+import com.example.demo.assign.entity.Assign;
 import com.example.demo.comment.entity.Comment;
 import com.example.demo.function.TimeStamp;
 import com.example.demo.schedule.scheduledto.ScheduleRequestDto;
@@ -28,18 +29,17 @@ public class Schedule extends TimeStamp {
     @Column(name = "content")
     private String content;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+
+    @OneToMany(mappedBy = "schedule", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Assign> assign;
 
     @OneToMany(mappedBy = "schedule",cascade = CascadeType.ALL , orphanRemoval = true)
     private List<Comment> comment;
 
 
 
-    public Schedule(User user ,ScheduleRequestDto scheduleRequestDto){
+    public Schedule(ScheduleRequestDto scheduleRequestDto){
 
-        this.user = user;
         this.title = scheduleRequestDto.getTitle();
         this.content = scheduleRequestDto.getContent();
     }

@@ -6,6 +6,8 @@ import com.example.demo.schedule.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/schedules")
@@ -14,10 +16,10 @@ public class ScheduleController {
     private final ScheduleService scheduleService;
 
 
-    @PostMapping("{userId}")
-    public ScheduleResponseDto createSchedule(@PathVariable Long userId,@RequestBody ScheduleRequestDto scheduleRequestDto){
+    @PostMapping
+    public ScheduleResponseDto createSchedule( @RequestBody ScheduleRequestDto scheduleRequestDto){
 
-        return scheduleService.createSchedule(userId,scheduleRequestDto);
+        return scheduleService.createSchedule(scheduleRequestDto);
     }
 
     @GetMapping("/{id}")

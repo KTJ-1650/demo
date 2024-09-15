@@ -1,5 +1,6 @@
 package com.example.demo.user.entity;
 
+import com.example.demo.assign.entity.Assign;
 import com.example.demo.function.TimeStamp;
 import com.example.demo.schedule.entity.Schedule;
 import com.example.demo.user.dto.UserRequestDto;
@@ -26,8 +27,11 @@ public class User extends TimeStamp {
     private String email;
 
 
+   /* @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Schedule> schedule;*/
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Schedule> schedule;
+    private  List<Assign> assigns;
 
     public User(UserRequestDto userRequestDto){
         this.username = userRequestDto.getUsername();
