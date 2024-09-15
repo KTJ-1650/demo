@@ -1,4 +1,4 @@
-package com.example.demo.schedule.function;
+package com.example.demo.function;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -22,4 +22,5 @@ public abstract class TimeStamp {
     @Column
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime  modifiedAt;
+
 }

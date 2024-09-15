@@ -14,10 +14,10 @@ public class ScheduleController {
     private final ScheduleService scheduleService;
 
 
-    @PostMapping
-    public ScheduleResponseDto createSchedule(@RequestBody ScheduleRequestDto scheduleRequestDto){
+    @PostMapping("{userId}")
+    public ScheduleResponseDto createSchedule(@PathVariable Long userId,@RequestBody ScheduleRequestDto scheduleRequestDto){
 
-        return scheduleService.createSchedule(scheduleRequestDto);
+        return scheduleService.createSchedule(userId,scheduleRequestDto);
     }
 
     @GetMapping("/{id}")

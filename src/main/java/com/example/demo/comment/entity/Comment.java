@@ -2,13 +2,11 @@ package com.example.demo.comment.entity;
 
 import com.example.demo.comment.dto.CommentRequestDto;
 import com.example.demo.schedule.entity.Schedule;
-import com.example.demo.schedule.function.TimeStamp;
+import com.example.demo.function.TimeStamp;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
