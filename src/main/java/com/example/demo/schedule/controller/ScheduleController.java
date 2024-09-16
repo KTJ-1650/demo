@@ -1,5 +1,6 @@
 package com.example.demo.schedule.controller;
 
+import com.example.demo.schedule.scheduledto.ScheduleInquiryResponseDto;
 import com.example.demo.schedule.scheduledto.ScheduleRequestDto;
 import com.example.demo.schedule.scheduledto.ScheduleResponseDto;
 import com.example.demo.schedule.service.ScheduleService;
@@ -23,7 +24,7 @@ public class ScheduleController {
     }
 
     @GetMapping("/{id}")
-    public  ScheduleResponseDto inquirySchedule(@PathVariable Long id){
+    public ScheduleInquiryResponseDto inquirySchedule(@PathVariable Long id){
 
         return scheduleService.inquirySchedule(id);
     }
@@ -39,4 +40,11 @@ public class ScheduleController {
 
         scheduleService.deleteSchedule(scheduleId);
     }
+
+    @GetMapping("/full")
+    public List<ScheduleResponseDto> fullInquirySchedule(){
+
+        return scheduleService.fullInquirySchedule();
+    }
+
 }

@@ -6,10 +6,8 @@ import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
 @Getter
-public class ScheduleResponseDto {
-
+public class ScheduleInquiryResponseDto {
 
     private String title;
     private String content;
@@ -17,12 +15,18 @@ public class ScheduleResponseDto {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
+    private List<Assign> assignList;
 
-    public ScheduleResponseDto(Schedule schedule){
+    public ScheduleInquiryResponseDto(Schedule schedule, List<Assign> assignList){
 
         this.title = schedule.getTitle();
         this.content = schedule.getContent();
         this.createdAt = schedule.getCreatedAt();
         this.modifiedAt = schedule.getModifiedAt();
+
+        this.assignList = assignList.stream().map(assign -> new Assign(assign.getId(), assign.getUsername(), assign.getEmail()))
+                .toList();
+
+
     }
 }

@@ -30,7 +30,7 @@ public class Schedule extends TimeStamp {
     private String content;
 
 
-    @OneToMany(mappedBy = "schedule", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "schedule",fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Assign> assign;
 
     @OneToMany(mappedBy = "schedule",cascade = CascadeType.ALL , orphanRemoval = true)
@@ -45,6 +45,9 @@ public class Schedule extends TimeStamp {
     }
 
 
+    public void include(List<Assign> assign){
+        this.assign = assign;
+    }
 
 
 
@@ -53,7 +56,6 @@ public class Schedule extends TimeStamp {
         this.title = scheduleRequestDto.getTitle();
         this.content = scheduleRequestDto.getContent();
     }
-
 
 
 

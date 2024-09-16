@@ -4,6 +4,7 @@ import com.example.demo.assign.entity.Assign;
 import com.example.demo.assign.repository.AssignRepository;
 import com.example.demo.schedule.entity.Schedule;
 import com.example.demo.schedule.repository.ScheduleRepository;
+import com.example.demo.schedule.scheduledto.ScheduleInquiryResponseDto;
 import com.example.demo.schedule.scheduledto.ScheduleRequestDto;
 import com.example.demo.schedule.scheduledto.ScheduleResponseDto;
 import com.example.demo.user.entity.User;
@@ -25,6 +26,7 @@ public class ScheduleService {
     public ScheduleResponseDto createSchedule(ScheduleRequestDto scheduleRequestDto){
 
 
+
         Schedule schedule = new Schedule(scheduleRequestDto);
 
        Schedule savedSchedule  = scheduleRepository.save(schedule);
@@ -32,12 +34,14 @@ public class ScheduleService {
        return new ScheduleResponseDto(savedSchedule);
     }
 
-    public ScheduleResponseDto inquirySchedule(Long id) {
+    public ScheduleInquiryResponseDto inquirySchedule(Long id) {
 
        Schedule schedule = scheduleRepository.findById(id)
                 .orElseThrow(()-> new NoSuchElementException("아이디가 존재하지 않습니다."));
 
-       return new ScheduleResponseDto(schedule);
+       List<Assign> listAssign = assignRepository.findAllByScheduleId(id);
+
+       return new ScheduleInquiryResponseDto(schedule,listAssign);
     }
 
     @Transactional
@@ -58,5 +62,12 @@ public class ScheduleService {
                 .orElseThrow(()-> new NoSuchElementException("아이디가 존재하지 않습니다."));
 
       scheduleRepository.delete(foundSchedule);
+    }
+
+    public List<ScheduleResponseDto> fullInquirySchedule() {
+
+        List<Schedule> foundSchedule = scheduleRepository.findAll();
+
+        return foundSchedule.stream().map(ScheduleResponseDto::new).toList();
     }
 }
