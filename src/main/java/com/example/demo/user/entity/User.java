@@ -26,6 +26,7 @@ public class User extends TimeStamp {
     private String username;
     private String email;
 
+    private String password;
 
    /* @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Schedule> schedule;*/
@@ -36,6 +37,7 @@ public class User extends TimeStamp {
     public User(UserRequestDto userRequestDto){
         this.username = userRequestDto.getUsername();
         this.email = userRequestDto.getEmail();
+        this.password = userRequestDto.getPassword();
 
     }
 }
