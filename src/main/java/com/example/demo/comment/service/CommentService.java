@@ -33,11 +33,11 @@ public class CommentService {
 
         Comment comment = new Comment(commentRequestDto);
 
-        comment.scheduleComment(schedule);
+        comment.scheduleComment(schedule);  //1번 스케쥴에   댓글을 연결한거
 
         Comment savedComment = commentRepository.save(comment);
 //
-       return new CommentResponseDto(comment);
+       return new CommentResponseDto(savedComment);
     }
 
     public CommentResponseDto inquiryComment(Long id) {

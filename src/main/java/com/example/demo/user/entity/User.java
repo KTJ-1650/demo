@@ -1,6 +1,7 @@
 package com.example.demo.user.entity;
 
 import com.example.demo.assign.entity.Assign;
+import com.example.demo.config.PasswordEncoder;
 import com.example.demo.function.TimeStamp;
 import com.example.demo.schedule.entity.Schedule;
 import com.example.demo.user.dto.UserRequestDto;
@@ -34,10 +35,13 @@ public class User extends TimeStamp {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private  List<Assign> assigns;
 
-    public User(UserRequestDto userRequestDto){
+    public User(UserRequestDto userRequestDto , String encodedPassword){
         this.username = userRequestDto.getUsername();
         this.email = userRequestDto.getEmail();
-        this.password = userRequestDto.getPassword();
+        this.password = encodedPassword;
 
     }
+
+
+
 }
