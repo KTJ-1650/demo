@@ -38,7 +38,7 @@ public class AuthFilter implements Filter {
         } else {
             // 나머지 API 요청은 인증 처리 진행
             // 토큰 확인
-            String tokenValue = jwtUtil.getTokenFromRequest(httpServletRequest);
+            String tokenValue = httpServletRequest.getHeader("Authorization");
 
             if (StringUtils.hasText(tokenValue)) { // 토큰이 존재하면 검증 시작
                 // JWT 토큰 substring
@@ -52,7 +52,7 @@ public class AuthFilter implements Filter {
                 // 토큰에서 사용자 정보 가져오기
                 Claims info = jwtUtil.getUserInfoFromToken(token);
 
-                User user = userRepository.findByUsername(info.getSubject()).orElseThrow(() ->
+                User user = userRepository.findById(Long.valueOf(info.getSubject())).orElseThrow(() ->
                         new NullPointerException("Not Found User")
                 );
 
