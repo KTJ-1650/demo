@@ -23,9 +23,14 @@ public class UserService {
 
     public UserResponseDto createUser(UserRequestDto userRequestDto) {
 
+        if (userRepository.existsByUsername(userRequestDto.getUsername())) {
+            throw new IllegalArgumentException("이미 존재하는 사용자 입니다.");
+        }
+
         if (userRepository.existsByEmail(userRequestDto.getEmail())) {
             throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
         }
+
 
         //비밀번호 암호화
         String encodedPassword = passwordEncoder.encode(userRequestDto.getPassword());
@@ -54,4 +59,21 @@ public class UserService {
       return foundUser.stream().map(UserResponseDto::new).toList();
     }
 
+
+    public UserResponseDto login(UserRequestDto userRequestDto) {
+
+        User loginUser = userRepository.findByEmail(userRequestDto.getEmail());
+        if (loginUser == null) {
+            throw new IllegalArgumentException("존재하지 않는 이메일 입니다.");
+        }
+
+        if (!passwordEncoder.matches(userRequestDto.getPassword(), loginUser.getPassword())) {
+            throw new IllegalArgumentException("패스워드가 맞지 않습니다.");
+        }
+
+
+        String token = jwtUtil.createToken(loginUser.getId(),loginUser.getUsername(),loginUser.getEmail());
+
+        return new UserResponseDto(loginUser,token,"로그인 했습니다.");
+    }
 }
