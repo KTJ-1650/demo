@@ -4,6 +4,7 @@ import com.example.demo.schedule.scheduledto.ScheduleInquiryResponseDto;
 import com.example.demo.schedule.scheduledto.ScheduleRequestDto;
 import com.example.demo.schedule.scheduledto.ScheduleResponseDto;
 import com.example.demo.schedule.service.ScheduleService;
+import com.example.demo.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,16 +30,16 @@ public class ScheduleController {
         return scheduleService.inquirySchedule(id);
     }
 
-    @PutMapping("/{id}")
-    public ScheduleResponseDto updateSchedule(@PathVariable Long id ,@RequestBody ScheduleRequestDto scheduleRequestDto){
+    @PutMapping("/{scheduleId}")
+    public ScheduleResponseDto updateSchedule(@PathVariable Long scheduleId , @RequestBody ScheduleRequestDto scheduleRequestDto){
 
-        return scheduleService.updateSchedule(id,scheduleRequestDto);
+        return scheduleService.updateSchedule(scheduleId,scheduleRequestDto);
     }
 
     @DeleteMapping("/{scheduleId}")
-    public void deleteSchedule(@PathVariable Long scheduleId){
+    public void deleteSchedule(@PathVariable Long scheduleId, User user){
 
-        scheduleService.deleteSchedule(scheduleId);
+        scheduleService.deleteSchedule(scheduleId,user);
     }
 
     @GetMapping("/full")

@@ -3,6 +3,7 @@ package com.example.demo.user.service;
 
 import com.example.demo.config.JwtUtil;
 import com.example.demo.config.PasswordEncoder;
+import com.example.demo.config.UserRoleEnum;
 import com.example.demo.user.dto.UserRequestDto;
 import com.example.demo.user.dto.UserResponseDto;
 import com.example.demo.user.entity.User;
@@ -35,11 +36,16 @@ public class UserService {
         //비밀번호 암호화
         String encodedPassword = passwordEncoder.encode(userRequestDto.getPassword());
 
-        User user = new User(userRequestDto,encodedPassword);
+        UserRoleEnum role = UserRoleEnum.USER;
+        if(userRequestDto.getRole().equals("ADMIN")){
+            role = UserRoleEnum.ADMIN;
+        }
+
+        User user = new User(userRequestDto,encodedPassword,role);
 
        User savedUser  = userRepository.save(user);
 
-       String token = jwtUtil.createToken(savedUser.getId(),savedUser.getUsername(),savedUser.getEmail());
+       String token = jwtUtil.createToken(savedUser.getId(),savedUser.getUsername(),savedUser.getEmail(),savedUser.getRole());
 
        return new UserResponseDto(savedUser,token);
     }
@@ -72,8 +78,10 @@ public class UserService {
         }
 
 
-        String token = jwtUtil.createToken(loginUser.getId(),loginUser.getUsername(),loginUser.getEmail());
+        String token = jwtUtil.createToken(loginUser.getId(),loginUser.getUsername(),loginUser.getEmail(),loginUser.getRole());
 
         return new UserResponseDto(loginUser,token,"로그인 했습니다.");
     }
+
+
 }

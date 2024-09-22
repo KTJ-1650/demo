@@ -1,9 +1,8 @@
 package com.example.demo.user.entity;
 
 import com.example.demo.assign.entity.Assign;
-import com.example.demo.config.PasswordEncoder;
+import com.example.demo.config.UserRoleEnum;
 import com.example.demo.function.TimeStamp;
-import com.example.demo.schedule.entity.Schedule;
 import com.example.demo.user.dto.UserRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -29,6 +28,9 @@ public class User extends TimeStamp {
 
     private String password;
 
+    @Enumerated(EnumType.STRING)
+    private UserRoleEnum role;
+
    /* @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Schedule> schedule;*/
 
@@ -41,6 +43,16 @@ public class User extends TimeStamp {
         this.password = encodedPassword;
 
     }
+
+    public User(UserRequestDto userRequestDto, String encodedPassword, UserRoleEnum role) {
+        this.username = userRequestDto.getUsername();
+        this.email = userRequestDto.getEmail();
+        this.password = encodedPassword;
+        this.role = role;
+    }
+
+
+
 
 
 

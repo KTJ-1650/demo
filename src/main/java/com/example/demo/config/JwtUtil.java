@@ -37,7 +37,7 @@ public class JwtUtil {
         key = Keys.hmacShaKeyFor(bytes);
     }
 
-    public String createToken(Long userId, String username,String email){
+    public String createToken(Long userId, String username,String email,UserRoleEnum role){
         Date date = new Date();
 
         return BEARER_PREFIX +
@@ -45,6 +45,7 @@ public class JwtUtil {
                         .setSubject(String.valueOf(userId))
                         .claim("username",username)
                         .claim("email",email)
+                        .claim("role",role.getAuthority())
                         .setExpiration(new Date(date.getTime() + TOKEN_TIME))
                         .setIssuedAt(date)
                         .signWith(key,signatureAlgorithm)

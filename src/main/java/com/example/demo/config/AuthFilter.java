@@ -5,6 +5,7 @@ import com.example.demo.user.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -19,15 +20,20 @@ public class AuthFilter implements Filter {
 
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
+    private final HttpServletResponse httpServletResponse;
 
-    public AuthFilter(UserRepository userRepository, JwtUtil jwtUtil) {
+    public AuthFilter(UserRepository userRepository, JwtUtil jwtUtil, HttpServletResponse httpServletResponse) {
         this.userRepository = userRepository;
         this.jwtUtil = jwtUtil;
+        this.httpServletResponse = httpServletResponse;
     }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+        HttpServletResponse httpResponse = (HttpServletResponse) response;
+
+
         String url = httpServletRequest.getRequestURI();
 
         if (StringUtils.hasText(url) &&
@@ -51,6 +57,18 @@ public class AuthFilter implements Filter {
 
                 // 토큰에서 사용자 정보 가져오기
                 Claims info = jwtUtil.getUserInfoFromToken(token);
+
+                UserRoleEnum role = UserRoleEnum.valueOf(info.get("role", String.class));
+                log.info(role.getAuthority());
+                if (url.startsWith("/schedules/") &&
+                        (httpServletRequest.getMethod().equals("PUT") || httpServletRequest.getMethod().equals("DELETE"))) {
+                    // 일정 수정/삭제 요청에 대해서는 관리자 권한만 허용
+                    if (!role.equals(UserRoleEnum.ADMIN)) {
+                        httpResponse.sendError(HttpServletResponse.SC_FORBIDDEN,"관리자가 아니라 접근할 수 없습니다.");
+                        return;
+                    }
+                }
+
 
                 User user = userRepository.findById(Long.valueOf(info.getSubject())).orElseThrow(() ->
                         new NullPointerException("Not Found User")

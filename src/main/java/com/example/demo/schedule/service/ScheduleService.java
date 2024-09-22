@@ -2,6 +2,7 @@ package com.example.demo.schedule.service;
 
 import com.example.demo.assign.entity.Assign;
 import com.example.demo.assign.repository.AssignRepository;
+import com.example.demo.config.UserRoleEnum;
 import com.example.demo.schedule.entity.Schedule;
 import com.example.demo.schedule.repository.ScheduleRepository;
 import com.example.demo.schedule.scheduledto.ScheduleInquiryResponseDto;
@@ -45,10 +46,12 @@ public class ScheduleService {
     }
 
     @Transactional
-    public ScheduleResponseDto updateSchedule(Long id, ScheduleRequestDto scheduleRequestDto) {
+    public ScheduleResponseDto updateSchedule(Long scheduleId, ScheduleRequestDto scheduleRequestDto) {
 
-      Schedule schedule = scheduleRepository.findById(id)
+      Schedule schedule = scheduleRepository.findById(scheduleId)
                 .orElseThrow(()-> new NoSuchElementException("아이디가 존재하지 않습니다."));
+
+
 
       schedule.update(scheduleRequestDto);
 
@@ -56,10 +59,14 @@ public class ScheduleService {
     }
 
 
-    public void deleteSchedule(Long scheduleId) {
+    public void deleteSchedule(Long scheduleId, User user) {
 
       Schedule foundSchedule  =  scheduleRepository.findById(scheduleId)
                 .orElseThrow(()-> new NoSuchElementException("아이디가 존재하지 않습니다."));
+
+      if(!user.getRole().equals(UserRoleEnum.ADMIN)) {
+          throw new IllegalArgumentException("삭제할 권한이 없습니다.");
+      }
 
       scheduleRepository.delete(foundSchedule);
     }
