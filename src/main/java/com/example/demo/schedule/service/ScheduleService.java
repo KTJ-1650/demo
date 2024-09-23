@@ -10,6 +10,8 @@ import com.example.demo.schedule.scheduledto.ScheduleRequestDto;
 import com.example.demo.schedule.scheduledto.ScheduleResponseDto;
 import com.example.demo.user.entity.User;
 import com.example.demo.user.repository.UserRepository;
+import com.example.demo.weather.entity.Weather;
+import com.example.demo.weather.service.WeatherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,12 +25,13 @@ public class ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
     private final AssignRepository assignRepository;
+    private final WeatherService weatherService;
 
     public ScheduleResponseDto createSchedule(ScheduleRequestDto scheduleRequestDto){
 
+        String weather = weatherService.getTodayWeather();
 
-
-        Schedule schedule = new Schedule(scheduleRequestDto);
+        Schedule schedule = new Schedule(scheduleRequestDto,weather);
 
        Schedule savedSchedule  = scheduleRepository.save(schedule);
 

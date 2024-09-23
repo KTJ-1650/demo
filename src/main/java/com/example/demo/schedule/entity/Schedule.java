@@ -29,6 +29,7 @@ public class Schedule extends TimeStamp {
     @Column(name = "content")
     private String content;
 
+    private String weather;
 
     @OneToMany(mappedBy = "schedule",fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Assign> assign;
@@ -42,6 +43,13 @@ public class Schedule extends TimeStamp {
 
         this.title = scheduleRequestDto.getTitle();
         this.content = scheduleRequestDto.getContent();
+    }
+
+    public Schedule(ScheduleRequestDto scheduleRequestDto,String weather){
+
+        this.title = scheduleRequestDto.getTitle();
+        this.content = scheduleRequestDto.getContent();
+        this.weather = weather;
     }
 
 

@@ -13,6 +13,7 @@ public class ScheduleResponseDto {
 
     private String title;
     private String content;
+    private String weather;
 
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
@@ -22,6 +23,7 @@ public class ScheduleResponseDto {
 
         this.title = schedule.getTitle();
         this.content = schedule.getContent();
+        this.weather = schedule.getWeather();
         this.createdAt = schedule.getCreatedAt();
         this.modifiedAt = schedule.getModifiedAt();
     }
